@@ -170,18 +170,70 @@
         </div>
 
         <form id="quizForm">
-            <h3>I. Competencia Técnica</h3>
-            <div class="question-block"><span>1. ¿Herramienta para análisis de datos?</span>
+            <h3>I. Competencia Técnica (AT)</h3>
+            <div class="question-block"><span>1. ¿Herramienta principal para análisis de datos masivos?</span>
                 <label><input type="radio" name="p1" value="0"> MS Paint</label>
                 <label><input type="radio" name="p1" value="10"> Python (Pandas)</label>
             </div>
-            <div class="question-block"><span>2. ¿Propósito de una Primary Key?</span>
+            <div class="question-block"><span>2. ¿Propósito de una Primary Key en Base de Datos?</span>
                 <label><input type="radio" name="p2" value="10"> Identificador único</label>
                 <label><input type="radio" name="p2" value="0"> Estética visual</label>
             </div>
-            <div class="question-block"><span>3. ¿Qué es HTTP?</span>
-                <label><input type="radio" name="p3" value="10"> Protocolo transferencia</label>
-                <label><input type="radio" name="p3" value="0"> Procesador</label>
+            <div class="question-block"><span>3. ¿Qué es HTTP en el desarrollo web?</span>
+                <label><input type="radio" name="p3" value="10"> Protocolo de transferencia</label>
+                <label><input type="radio" name="p3" value="0"> Tipo de procesador</label>
+            </div>
+            <div class="question-block"><span>4. ¿Qué es un ciclo For en programación?</span>
+                <label><input type="radio" name="p4" value="10"> Repetición determinada</label>
+                <label><input type="radio" name="p4" value="0"> Comando de apagado</label>
+            </div>
+            <div class="question-block"><span>5. ¿Cuál es la función de Git Push?</span>
+                <label><input type="radio" name="p5" value="10"> Subir cambios al servidor</label>
+                <label><input type="radio" name="p5" value="0"> Borrar el código local</label>
+            </div>
+
+            <h3>II. Área de Desempeño (AD)</h3>
+            <div class="question-block"><span>6. Ante una sobrecarga de tareas, usted:</span>
+                <label><input type="radio" name="p6" value="10"> Prioriza por importancia</label>
+                <label><input type="radio" name="p6" value="0"> Detiene el trabajo</label>
+            </div>
+            <div class="question-block"><span>7. Si detecta una falla técnica en otra área:</span>
+                <label><input type="radio" name="p7" value="10"> Reporta de inmediato</label>
+                <label><input type="radio" name="p7" value="0"> No es mi problema</label>
+            </div>
+            <div class="question-block"><span>8. Para manejar plazos de entrega ajustados:</span>
+                <label><input type="radio" name="p8" value="10"> Organiza con calidad</label>
+                <label><input type="radio" name="p8" value="0"> Entrega sin revisar</label>
+            </div>
+            <div class="question-block"><span>9. Actitud ante un nuevo software de trabajo:</span>
+                <label><input type="radio" name="p9" value="10"> Investiga y aprende</label>
+                <label><input type="radio" name="p9" value="0"> Prefiere lo antiguo</label>
+            </div>
+            <div class="question-block"><span>10. En reuniones de equipo, usted:</span>
+                <label><input type="radio" name="p10" value="10"> Aporta soluciones</label>
+                <label><input type="radio" name="p10" value="0"> Solo escucha</label>
+            </div>
+
+            <h3>III. Área de Actitud (AA)</h3>
+            <div class="question-block"><span>11. ¿Cómo recibe una crítica constructiva?</span>
+                <label><input type="radio" name="p11" value="10"> Analiza y mejora</label>
+                <label><input type="radio" name="p11" value="0"> Se pone a la defensiva</label>
+            </div>
+            <div class="question-block"><span>12. Su prioridad en el trabajo en equipo es:</span>
+                <label><input type="radio" name="p12" value="10"> El objetivo común</label>
+                <label><input type="radio" name="p12" value="0"> El éxito individual</label>
+            </div>
+            <div class="question-block"><span>13. Ante un conflicto interpersonal:</span>
+                <label><input type="radio" name="p13" value="10"> Busca solución mediadora</label>
+                <label><input type="radio" name="p13" value="0"> Evita el tema</label>
+            </div>
+            <div class="question-block"><span>14. La puntualidad laboral es:</span>
+                <label><input type="radio" name="p14" value="10"> Vital por respeto</label>
+                <label><input type="radio" name="p14" value="0"> Opcional</label>
+            </div>
+            <div class="question-block"><span>15. Si detecta un acto poco ético:</span>
+                <label><input type="radio" name="p15" value="10"> Informa oficialmente</label>
+                <label><input type="radio" name="p15" value="0"> Calla</label>
             </div>
 
             <div style="margin-top: 30px;">
@@ -228,12 +280,12 @@ def procesar(ev):
         return
 
     radios = document.select("input[type='radio']:checked")
-    if len(radios) < 3:
-        alert("Responda todas las preguntas.")
+    if len(radios) < 15:
+        alert("Por favor, responda las 15 preguntas.")
         return
 
     puntos = sum(int(r.value) for r in radios)
-    cc = round(puntos / 0.3, 1)
+    cc = round(puntos / 1.5, 1)
     
     res = document["resJ"]
     res.style.display = "block"
