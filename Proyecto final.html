@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CC/Matrix - Sistema Integrado Python</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.10.5/brython.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brython@3.10.5/brython_stdlib.js"></script>
+
+    <style>
+        :root { --primary: #002b5b; --accent: #007bff; --bg: #f4f7f9; --white: #ffffff; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); margin: 0; padding: 20px; color: #333; }
+        .main-container { max-width: 900px; margin: 0 auto; }
+        header { text-align: center; padding: 30px; background: linear-gradient(135deg, #002b5b 0%, #004085 100%); color: white; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .nav-menu { display: flex; gap: 20px; justify-content: center; margin-bottom: 30px; }
+        .btn-nav { padding: 15px 30px; font-size: 1.1em; font-weight: bold; cursor: pointer; border: none; border-radius: 10px; transition: 0.3s; flex: 1; max-width: 350px; }
+        .btn-empresa { background: var(--white); color: var(--primary); border: 2px solid var(--primary); }
+        .btn-joven { background: var(--accent); color: white; }
+        .module { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); display: none; }
+        h2, h3 { color: var(--primary); border-bottom: 3px solid var(--accent); padding-bottom: 10px; margin-top: 0; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        input[type="text"], input[type="email"], input[type="file"], select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; background-color: #f8f9fa; }
+        .question-block { margin-bottom: 15px; padding: 15px; background: #f8f9fa; border: 1px solid #dee2e6; border-left: 5px solid var(--accent); border-radius: 8px; font-size: 0.9em; }
+        .result-box { margin-top: 30px; padding: 25px; border-radius: 12px; text-align: center; border: 1px solid rgba(0,0,0,0.1); }
+        .pago { background: #d4edda; color: #155724; border-color: #c3e6cb; }
+        .aprobado { background: #fff3cd; color: #856404; border-color: #ffeeba; }
+        .rechazo { background: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+        .static-metric-box { background: #eef; border: 1px solid #ccd; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 10px; }
+        .metric-value { font-size: 1.8em; font-weight: bold; color: var(--primary); }
+        .aviso-pago { font-size: 0.85em; color: #d9534f; font-style: italic; margin-top: 10px; display: block; line-height: 1.4; font-weight: bold; }
+    </style>
+</head>
+<body onload="brython()">
+
+<div class="main-container">
+    <header>
+        <h1>CC/Matrix</h1>
+        <p>UNITEC | Ingeniería en Sistemas</p>
+    </header>
+
+    <div class="nav-menu">
+        <button class="btn-nav btn-empresa" id="nav_e">🏢 Módulo Empresa</button>
+        <button class="btn-nav btn-joven" id="nav_j">🎓 Módulo Joven</button>
+    </div>
+
+    <div id="moduloEmpresa" class="module">
+        <h2>Panel de Control Empresarial</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+            <div>
+                <h3>Registro de Empresa</h3>
+                <div class="input-group"><label>Nombre (NE):</label><input type="text" id="ne"></div>
+                <div class="input-group"><label>Ubicación (DE):</label><input type="text" id="de"></div>
+                <div class="input-group"><label>Correo (CO):</label><input type="text" id="co_e"></div>
+                <div class="input-group">
+                    <label>Tipo de Solicitud (SE):</label>
+                    <select id="se_e">
+                        <option value="">-- Seleccione --</option>
+                        <option value="1">Empleados</option>
+                        <option value="2">Pasantes</option>
+                        <option value="3">Ambos</option>
+                    </select>
+                </div>
+                <button class="btn-nav btn-joven" style="max-width: 100%;" id="btn_reg_e">Finalizar Registro</button>
+                <span class="aviso-pago">⚠️ AVISO: Se aplicará un pago trimestral dependiendo de cuántos empleados les consigamos.</span>
+            </div>
+            <div>
+                <h3>Indicadores de Mercado</h3>
+                <div class="static-metric-box"><div class="metric-value">100</div><div>Jóvenes (NJ)</div></div>
+                <div class="static-metric-box"><div class="metric-value">30</div><div>Empresas (CE)</div></div>
+                <div class="static-metric-box"><div class="metric-value">10</div><div>Jóvenes con Empleo (EC)</div></div>
+                <div class="result-box" style="display:block; background: #fff;">
+                    <div style="font-weight:bold; font-size: 1.2em;">Tasa de Acceso (TA): 10.0%</div>
+                    <div style="margin-top:5px;">Vínculo Empresarial (IVE): 0.30</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="moduloJoven" class="module">
+        <h2>Examen de Certificación Profesional</h2>
+        <div style="background:#f0f4f8; padding:20px; border-radius:10px; margin-bottom:20px;">
+            <h3>Identificación</h3>
+            <div class="input-group"><label>Número de Identidad (ID):</label><input type="text" id="idJ"></div>
+            <div class="input-group"><label>Nombre Completo (N):</label><input type="text" id="nomJ"></div>
+            <div class="input-group"><label>Correo Electrónico:</label><input type="email" id="emailJ"></div>
+            <div class="input-group"><label>Subir Curriculum (CV):</label><input type="file" id="cvJ"></div>
+        </div>
+
+        <form id="quizForm">
+            <h3>I. Competencia Técnica (AT)</h3>
+            <div class="question-block"><span>1. ¿Herramienta principal para análisis de datos masivos?</span><br>
+                <label><input type="radio" name="p1" value="0"> MS Paint</label>
+                <label><input type="radio" name="p1" value="10"> Python (Pandas)</label>
+            </div>
+            <div class="question-block"><span>2. ¿Propósito de una Primary Key en Base de Datos?</span><br>
+                <label><input type="radio" name="p2" value="10"> Identificador único</label>
+                <label><input type="radio" name="p2" value="0"> Estética visual</label>
+            </div>
+            <div class="question-block"><span>3. ¿Qué es HTTP en el desarrollo web?</span><br>
+                <label><input type="radio" name="p3" value="10"> Protocolo de transferencia</label>
+                <label><input type="radio" name="p3" value="0"> Tipo de procesador</label>
+            </div>
+            <div class="question-block"><span>4. ¿Qué es un ciclo For en programación?</span><br>
+                <label><input type="radio" name="p4" value="10"> Repetición determinada</label>
+                <label><input type="radio" name="p4" value="0"> Comando de apagado</label>
+            </div>
+            <div class="question-block"><span>5. ¿Cuál es la función de Git Push?</span><br>
+                <label><input type="radio" name="p5" value="10"> Subir cambios al servidor</label>
+                <label><input type="radio" name="p5" value="0"> Borrar el código local</label>
+            </div>
+
+            <h3>II. Área de Desempeño (AD)</h3>
+            <div class="question-block"><span>6. Ante una sobrecarga de tareas, usted:</span><br>
+                <label><input type="radio" name="p6" value="10"> Prioriza por importancia</label>
+                <label><input type="radio" name="p6" value="0"> Detiene el trabajo</label>
+            </div>
+            <div class="question-block"><span>7. Si detecta una falla técnica en otra área:</span><br>
+                <label><input type="radio" name="p7" value="10"> Reporta de inmediato</label>
+                <label><input type="radio" name="p7" value="0"> No es mi problema</label>
+            </div>
+            <div class="question-block"><span>8. Para manejar plazos de entrega ajustados:</span><br>
+                <label><input type="radio" name="p8" value="10"> Organiza con calidad</label>
+                <label><input type="radio" name="p8" value="0"> Entrega sin revisar</label>
+            </div>
+            <div class="question-block"><span>9. Actitud ante un nuevo software de trabajo:</span><br>
+                <label><input type="radio" name="p9" value="10"> Investiga y aprende</label>
+                <label><input type="radio" name="p9" value="0"> Prefiere lo antiguo</label>
+            </div>
+            <div class="question-block"><span>10. En reuniones de equipo, usted:</span><br>
+                <label><input type="radio" name="p10" value="10"> Aporta soluciones</label>
+                <label><input type="radio" name="p10" value="0"> Solo escucha</label>
+            </div>
+
+            <h3>III. Área de Actitud (AA)</h3>
+            <div class="question-block"><span>11. ¿Cómo recibe una crítica constructiva?</span><br>
+                <label><input type="radio" name="p11" value="10"> Analiza y mejora</label>
+                <label><input type="radio" name="p11" value="0"> Se pone a la defensiva</label>
+            </div>
+            <div class="question-block"><span>12. Su prioridad en el trabajo en equipo es:</span><br>
+                <label><input type="radio" name="p12" value="10"> El objetivo común</label>
+                <label><input type="radio" name="p12" value="0"> El éxito individual</label>
+            </div>
+            <div class="question-block"><span>13. Ante un conflicto interpersonal:</span><br>
+                <label><input type="radio" name="p13" value="10"> Busca solución mediadora</label>
+                <label><input type="radio" name="p13" value="0"> Evita el tema</label>
+            </div>
+            <div class="question-block"><span>14. La puntualidad laboral es:</span><br>
+                <label><input type="radio" name="p14" value="10"> Vital por respeto</label>
+                <label><input type="radio" name="p14" value="0"> Opcional</label>
+            </div>
+            <div class="question-block"><span>15. Si detecta un acto poco ético:</span><br>
+                <label><input type="radio" name="p15" value="10"> Informa oficialmente</label>
+                <label><input type="radio" name="p15" value="0"> Calla</label>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <button type="button" class="btn-nav btn-joven" style="max-width: 100%;" id="btn_eval">Finalizar Evaluación</button>
+                <span class="aviso-pago">⚠️ AVISO: En caso de ser contratado, solicitaremos un 15% de sus pagos del primer año.</span>
+            </div>
+        </form>
+
+        <div id="resJ" class="result-box" style="display:none;">
+            <h3 id="tJ"></h3>
+            <div id="cCC" style="font-size: 1.5em; font-weight: bold;"></div>
+            <div id="eAsig" style="margin: 10px 0; font-weight: bold; color: #002b5b;"></div>
+            <div id="iJ"></div>
+            <div id="emailRes" style="font-style: italic; color: #666; margin-top: 5px;"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/python">
+from browser import document, alert, window
+import random
+
+def mostrar(ev):
+    t_id = "moduloEmpresa" if ev.target.id == "nav_e" else "moduloJoven"
+    for m in document.select(".module"):
+        m.style.display = "none"
+    document[t_id].style.display = "block"
+
+def reg_e(ev):
+    n = document["ne"].value
+    s = document["se_e"].value
+    if not n or not s:
+        alert("Complete los datos requeridos.")
+    else:
+        alert(f"Empresa {n} registrada exitosamente.")
+
+def procesar(ev):
+    ident = document["idJ"].value
+    nombre = document["nomJ"].value
+    correo = document["emailJ"].value
+    archivos = document["cvJ"].files
+    
+    if not ident or not nombre or not correo or len(archivos) == 0:
+        alert("Complete identidad, correo y suba su curriculum.")
+        return
+
+    radios = document.select("input[type='radio']:checked")
+    if len(radios) < 15:
+        alert("Responda todas las preguntas.")
+        return
+
+    puntos = sum(int(r.value) for r in radios)
+    cc = round(puntos / 1.5, 1)
+    
+    res = document["resJ"]
+    res.style.display = "block"
+    
+    empresas = ["Tech HN", "Hilo Forma", "Innovación Digital"]
+    
+    if cc >= 70:
+        res.className = "result-box pago"
+        document["tJ"].text = "CONTRATACIÓN INMEDIATA"
+        document["eAsig"].text = f"Asignado a: {random.choice(empresas)}"
+    elif cc >= 50:
+        res.className = "result-box aprobado"
+        document["tJ"].text = "PASANTÍA"
+        document["eAsig"].text = ""
+    else:
+        res.className = "result-box rechazo"
+        document["tJ"].text = "RECHAZO / CAPACITACIÓN EXTERNA"
+        document["eAsig"].text = ""
+
+    document["cCC"].text = f"CC: {cc}%"
+    document["iJ"].text = f"ID: {ident} | {nombre}"
+    document["emailRes"].text = f"Contacto: {correo}"
+    res.scrollIntoView()
+
+document["nav_e"].bind("click", mostrar)
+document["nav_j"].bind("click", mostrar)
+document["btn_reg_e"].bind("click", reg_e)
+document["btn_eval"].bind("click", procesar)
+</script>
+
+</body>
+</html>
